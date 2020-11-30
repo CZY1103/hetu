@@ -1,26 +1,20 @@
+import java.util.*;
+
 public class seekmaxK {
-    import java.util.*;
 
     public class Finder {
-        public int findKth(int[] a, int n, int K) {
-            int m=removerepeat(a);
-            int n = m.length-1;
-            while(K>0){
-                n--;
-                K--;
-            }
-            return a[n];
+        public int findKth(int[] a, int n, int k) {
+            return removerepeat(a,0,n-1,k);
         }
-        public int[] removerepeat(int[] a){
-            int i = 0;
-            for(i=0;i<a.length-1;i++){
-                if(a[i]==a[i+1]){
-                    for(int j = i;j <a.length-1;j++)
-                        a[j]=a[j+1];
-                    a.length--;
-                }
+        public int removerepeat(int[] a,int lowIndex,int highIndex,int k) {
+            int park = partion(a, lowIndex, highIndex);
+            if (k == park-lowIndex+1) {
+                return a[k];
+            } else if (k>park-lowIndex+1) {
+                return removerepeat(a, park + 1, highIndex, k - park + lowIndex - 1)
+            } else {
+                return removerepeat(a, lowIndex, park - 1, k)
             }
-            return a[0];
         }
         public void swap(int[] a,int Index1,int Index2){
             int temp=a[Index1];
