@@ -1,44 +1,44 @@
+import java.util.Arrays;
+
 public class FindMaxK {
     public static int findKth(int[] a, int n, int K) {
-        return findKth(a, 0, n - 1, K);
+        quickSort(a,0,n-1);
+        System.out.println(Arrays.toString(a));
+        return a[K-1];
     }
-
-    public static void swap(int[] a, int lowIndex, int highIndex) {
-        int t = a[lowIndex];
-        a[lowIndex] = a[highIndex];
-        a[highIndex] = t;
+    public static void quickSort(int[] a,int lowIndex,int highIndex){
+        int size = highIndex - lowIndex+1;
+        if (size<=1){
+            return;
+        }
+        int keyIndex = partition(a,lowIndex,highIndex);
+        quickSort(a,lowIndex,keyIndex-1);
+        quickSort(a,keyIndex+1,highIndex);
     }
-
-    public static int partation(int[] a, int lowIndex, int highIndex) {
-        int left = lowIndex;
-        int right = highIndex;
+    public static int partition(int[] a, int lowIndex,int highIndex){
         int key = a[lowIndex];
-        while (left < right) {
-            while (left < right && a[right] < key) {
-                right--;
+        int leftIndex = lowIndex;
+        int rightIndex = highIndex;
+        while(leftIndex < rightIndex){
+            while(leftIndex < rightIndex && a[rightIndex]<=key){
+                rightIndex--;
             }
-            while (left < right && a[right] >= key) {
-                left++;
+            while(leftIndex < rightIndex && a[leftIndex]>=key){
+                leftIndex++;
             }
-            swap(a, left, right);
+            swap(a,leftIndex,rightIndex);
         }
-        swap(a, left, lowIndex);
-        return left;
+        swap(a,leftIndex,lowIndex);
+        return leftIndex;
     }
-
-    public static int findKth(int[] a, int lowIndex, int highIndex, int K) {
-        int part = partation(a, lowIndex, highIndex);
-        if (K == part - lowIndex + 1) {
-            return a[part];
-        } else if (K > part - lowIndex + 1) {
-            return findKth(a, part + 1, highIndex, K - (part - lowIndex + 1));
-        } else {
-            return findKth(a, lowIndex, part - 1, K);
-        }
+    public  static void swap(int[] a,int index1,int index2){
+        int temp = a[index1];
+        a[index1] = a[index2];
+        a[index2] = temp;
     }
 
     public static void main(String[] args) {
-        int[] a = {1, 3, 5, 9, 4, 6, 4, 6, 8};
-        System.out.println(findKth(a, 9, 2));
+        int[] arr = {1,3,5,2,2,};
+        System.out.println(findKth(arr, 5, 3));
     }
 }
